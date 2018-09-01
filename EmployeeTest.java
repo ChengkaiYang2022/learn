@@ -15,6 +15,10 @@ public class EmployeeTest {
         for(Employee e:staff){
             System.out.println("name=" + e.getName() + ",salary=" + e.getSalary() + ",hireDay=" + e.getHireDay());
         }
+        staff[1].setId();
+        staff[2].setId();
+        System.out.println(Employee.getNextId());
+
     }
 
 }
@@ -23,7 +27,15 @@ class Employee
     private String name;
     private double salary;
     private LocalDate hireDay;
-
+    private static int nextId = 1;
+    private int id;
+    public void setId(){
+        id = nextId;
+        nextId++;
+    }
+    public static int getNextId(){
+        return nextId;
+    }
     public Employee(String n,double s,int year,int month,int day){
         name = n;
         salary = s;

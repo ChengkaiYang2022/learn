@@ -43,6 +43,10 @@ class Employee
         salary = s;
         hireDay = LocalDate.of(year, month, day);
     }
+    public Employee(String n,double s){
+        name = n;
+        salary = s;
+    }
 
     public String getName(){
         return name;

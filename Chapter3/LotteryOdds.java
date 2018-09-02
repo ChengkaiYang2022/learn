@@ -1,3 +1,5 @@
+package Chapter3;
+
 import java.util.Scanner;
 public class LotteryOdds{
     public static void main(String[] args){

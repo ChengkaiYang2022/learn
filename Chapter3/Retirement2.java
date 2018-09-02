@@ -1,3 +1,5 @@
+package Chapter3;
+
 import java.util.Scanner;
 public class Retirement2 {
     public static void main(String[] args){

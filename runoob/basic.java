@@ -1,3 +1,5 @@
+package runoob;
+
 public class basic {
     public void mybasic(){
         System.out.println("mybasic");

@@ -4,7 +4,7 @@ public abstract class Person {
     private String name;
     public abstract String getDescription();
 
-    public Person(String name){
+    public  Person(String name){
         this.name = name;
     }
 

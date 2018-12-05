@@ -1,6 +1,5 @@
 package Chapter7.logging;
 
-import jdk.internal.org.objectweb.asm.Handle;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
@@ -21,30 +20,43 @@ public class LoggingImageViewer {
             try {
                 Logger.getLogger("com.yangchengkai.corejava").setLevel(Level.ALL);
                 final int LOG_ROTATION_COUNT = 10;
-                Handle handle = FileHandler("%h/LoggingImageViewer.log",0,LOG_ROTATION_COUNT);
-                Logger.getLogger("com.yangchengkai.corejava").addHandler(handle);
+                Handler handler = new FileHandler("%h/LoggingImageViewer.log",0,LOG_ROTATION_COUNT);
+                Logger.getLogger("com.yangchengkai.corejava").addHandler(handler);
             }
             catch (IOException e)
             {
                 Logger.getLogger("com.yangchengkai.corejava").log(Level.SEVERE,"Can't create log file handler",e);
             }
         }
+        
+        EventQueue.invokeLater(()->{
+            Handler windowHandler = new WindowHandler();
+            windowHandler.setLevel(Level.ALL);
+            Logger.getLogger("com.yangchengkai.corejava").addHandler(windowHandler);
+            
+            JFrame frame = new ImageViewerFrame();
+            frame.setTitle("LoggingImageViewer");
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            
+            Logger.getLogger("com.yangchengkai.corejava").fine("Showing frame");
+            frame.setVisible(true);
+        });
     }
 }
+
 /**
  * The frame that shows the image.
  */
-class ImageViewerFrame extends JFrame
-{
+class ImageViewerFrame extends JFrame {
     private static final int DEFAULT_WIDTH = 300;
     private static final int DEFAULT_HIGHT = 400;
 
     private JLabel label;
     private static Logger logger = Logger.getLogger("com.yangchengkai.corejava");
 
-    public ImageViewerFrame(){
-        logger.entering("ImageViewerFrame","<init>");
-        setSize(DEFAULT_WIDTH,DEFAULT_HIGHT);
+    public ImageViewerFrame() {
+        logger.entering("ImageViewerFrame", "<init>");
+        setSize(DEFAULT_WIDTH, DEFAULT_HIGHT);
 
         //set up menu bar
         JMenuBar menuBar = new JMenuBar();
@@ -55,13 +67,60 @@ class ImageViewerFrame extends JFrame
 
         JMenuItem openItem = new JMenuItem("Open");
         menu.add(openItem);
+        openItem.addActionListener(new FileOpenListener());
 
+        JMenuItem exitItem = new JMenuItem("Exit");
+        menu.add(exitItem);
+        exitItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                logger.fine("Exiting.");
+                System.exit(0);
+            }
+        });
         //use a label to display the images
+
+        label = new JLabel();
+        add(label);
+        logger.exiting("ImageViewerFrame", "<init>");
+    }
+
+
+    private class FileOpenListener implements ActionListener {
+//    private static Logger logger = Logger.getLogger("com.yangchengkai.corejava");
+
+        public void actionPerformed(ActionEvent event) {
+            logger.entering("ImageViewerFrame.FileOpenListener", "actionPerformed", event);
+
+            // set up file chooser
+            JFileChooser chooser = new JFileChooser();
+            chooser.setCurrentDirectory(new File("."));
+
+            // accept all files ending with .gif
+            chooser.setFileFilter(new javax.swing.filechooser.FileFilter() {
+                public boolean accept(File f) {
+                    return f.getName().toLowerCase().endsWith(".gif") || f.isDirectory();
+                }
+
+                public String getDescription() {
+                    return "GIF Images";
+                }
+            });
+
+            // show file chooser dialog
+            int r = chooser.showOpenDialog(ImageViewerFrame.this);
+
+            // if image file accepted, set it as icon of the label
+            if (r == JFileChooser.APPROVE_OPTION) {
+                String name = chooser.getSelectedFile().getPath();
+                logger.log(Level.FINE, "Reading file {0}", name);
+                label.setIcon(new ImageIcon(name));
+            } else logger.fine("File open dialog canceled");
+            logger.exiting("ImageViewerFrame.FileOpenListener", "actionPerformed");
+        }
 
     }
 }
-
-
 /* *
  * A handler for displaying log records in a window.
  **/
@@ -69,7 +128,8 @@ class WindowHandler extends StreamHandler
 {
     private JFrame frame;
 
-    public WindowHandler(){
+    public WindowHandler()
+    {
         frame = new JFrame();
         final JTextArea output = new JTextArea();
         output.setEditable(false);
@@ -78,18 +138,20 @@ class WindowHandler extends StreamHandler
         frame.setFocusableWindowState(false);
         frame.setVisible(true);
 
-        setOutputStream(new OutputStream() {
-            public void write(int b){
-
+        setOutputStream(new OutputStream()
+        {
+            public void write(int b)
+            {
             }
-            public void write(byte[] b, int off, int len){
+            public void write(byte[] b, int off, int len)
+            {
                 output.append(new String(b, off, len));
             }
         });
-
     }
 
-    public void publish(LogRecord record){
+    public void publish(LogRecord record)
+    {
         if(!frame.isVisible()){
             return;
         }

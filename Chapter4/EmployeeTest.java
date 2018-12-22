@@ -20,9 +20,18 @@ public class EmployeeTest {
         staff[1].setId();
         staff[2].setId();
         System.out.println(Employee.getNextId());
+        //;
+        setBonusZero(staff[1]);
 
     }
-
+    // 注意一个类中变量在自身的函数中修改值是会改变变量值的,也就是类指向同一内存地址
+    public static void setBonusZero(Employee e){
+        e.setSalary(0);
+        setBonusOne(e);
+    }
+    public static void setBonusOne(Employee e){
+        e.setSalary(1);
+    }
 }
 class Employee
 {
@@ -51,7 +60,9 @@ class Employee
     public String getName(){
         return name;
     }
-
+    public void setSalary(double salary){
+        this.salary = salary;
+    }
     public double getSalary(){
         return salary;
     }

@@ -49,7 +49,8 @@ public class PairTest3 {
         minmaxBonus(managers,result);
         //
         System.out.println("first: " + result.getFirst().getName() + ", second: " + result.getSecond().getName());
-        System.out.println("stop");
+        maxminBonus(managers,result);
+        System.out.println("first: " + result.getFirst().getName() + ", second: " + result.getSecond().getName());
     }
     public static void changeBonus(Manager m){
         m.setBonus(0);
@@ -74,5 +75,27 @@ public class PairTest3 {
         }
         result.setFirst(min);
         result.setSecond(max);
+    }
+    public static void maxminBonus(Manager[] a,Pair<? super Manager> result){
+        minmaxBonus(a,result);
+        PairAlg.swapHelper(result);
+    }
+
+}
+
+class PairAlg
+{
+    public static boolean hasNull(Pair<?> p){
+        return p.getFirst() == null || p.getSecond() ==null;
+    }
+
+    public static void swap(Pair<?> p){
+        swapHelper(p);
+    }
+
+    public static <T> void swapHelper(Pair<T> p){
+        T t = p.getFirst();
+        p.setFirst(p.getSecond());
+        p.setSecond(t);
     }
 }

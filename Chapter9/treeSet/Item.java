@@ -3,7 +3,7 @@ package Chapter9.treeSet;
 
 import java.util.Objects;
 
-/**
+/* *
  * An item with a description and a part number;
  *
  */

@@ -40,6 +40,10 @@ class Employee
     private LocalDate hireDay;
     private static int nextId = 1;
     private int id;
+    public Employee(String name){
+        this.name = name;
+
+    }
     public void setId(){
         id = nextId;
         nextId++;

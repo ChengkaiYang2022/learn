@@ -3,7 +3,7 @@ package Chapter9.priorityQueue;
 import java.util.*;
 import java.time.*;
 
-/**
+/* *
  *  This programme demonstrate the use of a priority queue.
  * @author yangchengkai
  *

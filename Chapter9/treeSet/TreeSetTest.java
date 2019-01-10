@@ -5,7 +5,7 @@ import java.util.NavigableSet;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-/**
+/* *
  *
  * This programme sorts a set of item by comparing their description.
  * @version 1.0.0

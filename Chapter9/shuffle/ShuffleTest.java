@@ -8,7 +8,7 @@ public class ShuffleTest {
     public static void main(String[] args)
     {
         List<Integer> numbers = new ArrayList<>();
-        for (int i = 1;i<=49;i++){
+        for (int i = 1;i<=7;i++){
             numbers.add(i);
         }
         Collections.shuffle(numbers);
@@ -17,5 +17,6 @@ public class ShuffleTest {
         Collections.sort(winningCombination);
 
         System.out.println(winningCombination);
+        System.out.println(Collections.binarySearch(winningCombination,4));
     }
 }
